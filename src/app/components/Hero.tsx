@@ -5,7 +5,7 @@ export default function Hero() {
     <section className="relative w-full h-screen flex items-center justify-center bg-gradient-to-t from-emerald-500/50  to-white overflow-hidden">
       <Paralax />
       <header className="-mt-40 z-[99] text-center px-4 w-full max-w-4xl ">
-        <h1 className="text-4xl md:text-4xl lg:text-6xl font-bold text-gray-800 mb-4">
+        <h1 className="text-4xl md:text-4xl lg:text-6xl font-bold text-gray-700 mb-4">
           Sampah Aja Diedukasi,
           <span className="text-emerald-600"> Kamu Kapan?</span>
         </h1>
