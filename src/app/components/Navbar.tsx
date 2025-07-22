@@ -88,8 +88,8 @@ export default function Navbar() {
         }`}
       >
         <div
-          className={`backdrop-blur-sm rounded-full px-8 py-3  border border-gray-200 transition-all duration-300  ${
-            scrolled ? "py-2 bg-white backdrop-blur-7xl" : "backdrop-blur-sm"
+          className={`backdrop-blur-xs rounded-full px-8 py-3  border border-gray-200 transition-all duration-300  ${
+            scrolled ? "py-2 bg-white/50" : ""
           }`}
         >
           <div className="flex items-center justify-center">
@@ -97,11 +97,11 @@ export default function Navbar() {
             <div className="hidden md:flex items-center space-x-2">
               {/* Logo/Brand */}
               <div className="flex items-center space-x-2 pr-4">
-                <div className="bg-gradient-to-br from-green-500 to-emerald-600 p-2 rounded-full">
+                <div className="bg-gradient-to-br from-emerald-500 to-emerald-600 p-2 rounded-full">
                   <Leaf className="w-5 h-5 text-white" />
                 </div>
                 <span className="font-bold text-lg bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-                  SampahPedia
+                  Sampedia
                 </span>
               </div>
 
@@ -118,7 +118,7 @@ export default function Navbar() {
                           e.stopPropagation();
                           handleDropdownToggle(index);
                         }}
-                        className="group flex items-center space-x-2 px-5 py-2.5 rounded-full text-gray-600 hover:text-green-600 hover:bg-green-50/80 transition-all duration-300 relative overflow-hidden"
+                        className="group flex items-center space-x-2 px-5 py-2.5 rounded-full text-gray-900 hover:text-green-600 hover:bg-green-50/80 transition-all duration-300 relative overflow-hidden"
                       >
                         <IconComponent className="w-4 h-4" />
                         <span className="text-sm font-medium whitespace-nowrap">
@@ -134,7 +134,7 @@ export default function Navbar() {
                     ) : (
                       <a
                         href={item.href}
-                        className="group flex items-center space-x-2 px-5 py-2.5 rounded-full text-gray-600 hover:text-green-600 hover:bg-green-50/80 transition-all duration-300 relative overflow-hidden"
+                        className="group flex items-center space-x-2 px-5 py-2.5 rounded-full text-gray-900 hover:text-green-600 hover:bg-green-50/80 transition-all duration-300 relative overflow-hidden"
                       >
                         <IconComponent className="w-4 h-4" />
                         <span className="text-sm font-medium whitespace-nowrap">
@@ -147,7 +147,7 @@ export default function Navbar() {
                     {/* Dropdown Menu */}
                     {item.hasDropdown && (
                       <div
-                        className={`absolute top-full mt-2 left-0 bg-white/95 backdrop-blur-lg rounded-2xl shadow-2xl border border-green-100 py-2 min-w-48 transition-all duration-300 transform origin-top ${
+                        className={`absolute top-full mt-6 left-0 bg-white/80 rounded-2xl backdrop-blur-xl border border-green-100 py-2 min-w-48 transition-all duration-300 transform origin-top shadow-lg ${
                           activeDropdown === index
                             ? "opacity-100 scale-100 translate-y-0 pointer-events-auto"
                             : "opacity-0 scale-95 -translate-y-2 pointer-events-none"
@@ -161,7 +161,7 @@ export default function Navbar() {
                                 key={dropdownItem.label}
                                 href={dropdownItem.href}
                                 onClick={() => setActiveDropdown(null)}
-                                className="group flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-green-600 hover:bg-green-50/80 transition-all duration-200 relative overflow-hidden"
+                                className="group flex items-center space-x-3 px-4 py-3 text-gray-900 hover:text-green-600 hover:bg-green-50/80 transition-all duration-200 relative overflow-hidden"
                                 style={{
                                   animationDelay: `${dropdownIndex * 50}ms`,
                                   animation:
@@ -290,7 +290,7 @@ export default function Navbar() {
                                 key={dropdownItem.label}
                                 href={dropdownItem.href}
                                 onClick={() => setIsOpen(false)}
-                                className="group flex items-center space-x-3 px-4 py-2 rounded-xl text-gray-600 hover:text-green-600 hover:bg-green-50/80 transition-all duration-200"
+                                className="group flex items-center space-x-3 px-4 py-2 rounded-xl text-gray-900 hover:text-green-600 hover:bg-green-50/80 transition-all duration-200"
                               >
                                 <DropdownIconComponent className="w-4 h-4 text-green-500" />
                                 <span className="text-sm font-medium">

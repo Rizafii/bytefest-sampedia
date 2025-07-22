@@ -1,12 +1,35 @@
 "use client";
-import { Trash2, BookOpen, Sprout, Users } from "lucide-react";
+import {
+  Trash2,
+  BookOpen,
+  Sprout,
+  Users,
+  CircleQuestionMark,
+} from "lucide-react";
+import { useState } from "react";
+import TargetCursor from "../rb/TargetCursor/TargetCursor";
 
 export default function LatarBelakang() {
+  const [isHovering, setIsHovering] = useState(false);
+
   return (
-    <section className="relative w-full min-h-screen bg-gray-50 py-20 px-4">
+    <section
+      className="relative w-full  py-20 px-4"
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
+    >
       <div className="max-w-6xl mx-auto">
+        {isHovering && (
+          <TargetCursor spinDuration={4} hideDefaultCursor={true} />
+        )}
         {/* Main heading */}
         <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 bg-emerald-100 px-4 py-2 rounded-full mb-6">
+            <CircleQuestionMark className="w-5 h-5 text-emerald-600 animate-pulse" />
+            <span className="text-emerald-700 font-medium text-sm">
+              About Page
+            </span>
+          </div>
           <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6 leading-tight">
             Kenapa Ada <span className="text-emerald-600">Website Ini?</span>
           </h1>
@@ -19,13 +42,13 @@ export default function LatarBelakang() {
         {/* Feature Cards Grid */}
         <div className="grid md:grid-cols-2 gap-12 lg:gap-16">
           {/* Problem Statement Card */}
-          <div className="group relative cursor-pointer transform rotate-2 hover:rotate-0 transition-transform duration-500 animate-[float_6s_ease-in-out_infinite]">
+          <div className="group cursor-target relative cursor-pointer transform rotate-2 hover:rotate-0 transition-transform duration-500 animate-[float_6s_ease-in-out_infinite]">
             {/* Stack effect layers */}
-            <div className="absolute inset-0 bg-yellow-100 border border-yellow-300 rounded-3xl transform translate-x-2 translate-y-2 opacity-0 group-hover:opacity-60 transition-all duration-500 group-hover:translate-x-3 group-hover:translate-y-3"></div>
+            <div className="absolute inset-0 bg-yellow-100  border border-yellow-300 rounded-3xl transform translate-x-2 translate-y-2 opacity-0 group-hover:opacity-60 transition-all duration-500 group-hover:translate-x-3 group-hover:translate-y-3"></div>
             <div className="absolute inset-0 bg-yellow-200 border border-yellow-400 rounded-3xl transform translate-x-1 translate-y-1 opacity-0 group-hover:opacity-80 transition-all duration-300 group-hover:translate-x-2 group-hover:translate-y-2"></div>
 
             {/* Main card */}
-            <div className="relative bg-yellow-50 border border-yellow-200 rounded-3xl p-8 shadow-yellow-200 hover:shadow-lg transition-all duration-500 hover:-translate-y-2 z-10">
+            <div className="relative bg-yellow-50 hover:bg border border-yellow-200 rounded-3xl p-8 shadow-yellow-200 hover:shadow-lg transition-all duration-500 hover:-translate-y-2 z-10">
               <div className="w-16 h-16 bg-yellow-500 rounded-2xl flex items-center justify-center mb-6 group-hover:rotate-12 group-hover:scale-110 transition-all duration-300">
                 <Trash2 className="w-8 h-8 text-white group-hover:animate-pulse" />
               </div>
@@ -40,7 +63,7 @@ export default function LatarBelakang() {
           </div>
 
           {/* Solution Card */}
-          <div className="group relative cursor-pointer transform -rotate-1 hover:rotate-0 transition-transform duration-500 md:translate-y-8 animate-[float_6s_ease-in-out_infinite_1s]">
+          <div className="group cursor-target relative cursor-pointer transform -rotate-1 hover:rotate-0 transition-transform duration-500 md:translate-y-8 animate-[float_6s_ease-in-out_infinite_1s]">
             {/* Stack effect layers */}
             <div className="absolute inset-0 bg-blue-100 border border-blue-300 rounded-3xl transform translate-x-2 translate-y-2 opacity-0 group-hover:opacity-60 transition-all duration-500 group-hover:translate-x-3 group-hover:translate-y-3"></div>
             <div className="absolute inset-0 bg-blue-200 border border-blue-400 rounded-3xl transform translate-x-1 translate-y-1 opacity-0 group-hover:opacity-80 transition-all duration-300 group-hover:translate-x-2 group-hover:translate-y-2"></div>
@@ -61,7 +84,7 @@ export default function LatarBelakang() {
           </div>
 
           {/* Community Impact Card */}
-          <div className="group relative cursor-pointer transform -rotate-2 hover:rotate-0 transition-transform duration-500 md:-translate-y-4 animate-[float_6s_ease-in-out_infinite_2s]">
+          <div className="group cursor-target relative cursor-pointer transform -rotate-2 hover:rotate-0 transition-transform duration-500 md:-translate-y-4 animate-[float_6s_ease-in-out_infinite_2s]">
             {/* Stack effect layers */}
             <div className="absolute inset-0 bg-green-100 border border-green-300 rounded-3xl transform translate-x-2 translate-y-2 opacity-0 group-hover:opacity-60 transition-all duration-500 group-hover:translate-x-3 group-hover:translate-y-3"></div>
             <div className="absolute inset-0 bg-green-200 border border-green-400 rounded-3xl transform translate-x-1 translate-y-1 opacity-0 group-hover:opacity-80 transition-all duration-300 group-hover:translate-x-2 group-hover:translate-y-2"></div>
@@ -82,7 +105,7 @@ export default function LatarBelakang() {
           </div>
 
           {/* Mission Card */}
-          <div className="group relative cursor-pointer transform rotate-1 hover:rotate-0 transition-transform duration-500 md:translate-y-6 animate-[float_6s_ease-in-out_infinite_3s]">
+          <div className="group cursor-target relative cursor-pointer transform rotate-1 hover:rotate-0 transition-transform duration-500 md:translate-y-6 animate-[float_6s_ease-in-out_infinite_3s]">
             {/* Stack effect layers */}
             <div className="absolute inset-0 bg-purple-100 border border-purple-300 rounded-3xl transform translate-x-2 translate-y-2 opacity-0 group-hover:opacity-60 transition-all duration-500 group-hover:translate-x-3 group-hover:translate-y-3"></div>
             <div className="absolute inset-0 bg-purple-200 border border-purple-400 rounded-3xl transform translate-x-1 translate-y-1 opacity-0 group-hover:opacity-80 transition-all duration-300 group-hover:translate-x-2 group-hover:translate-y-2"></div>

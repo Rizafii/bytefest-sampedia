@@ -3,4 +3,14 @@
 
 * {
   font-family: "Poppins", sans-serif;
+  /* Hapus scroll-behavior: smooth karena akan ditangani Lenis */
+}
+
+/* Optional: styling untuk smooth scroll yang lebih baik */
+html {
+  overflow-x: hidden;
+}
+
+body {
+  overflow-x: hidden;
 }
