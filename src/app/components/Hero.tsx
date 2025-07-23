@@ -5,7 +5,37 @@ import Paralax from "./Paralax";
 import ClickSpark from "../rb/ClickSpark/ClickSpark";
 import RotatingText from "../rb/RotatingText/RotatingText";
 
-export default function Hero() {
+interface HeroProps {
+  title: string;
+  rotatingTexts: string[];
+  subtitle: string;
+  primaryColor: string;
+  ctaPrimary: {
+    text: string;
+    action?: () => void;
+  };
+  ctaSecondary: {
+    text: string;
+    action?: () => void;
+  };
+  theme: {
+    gradient: string;
+    primaryColor: string;
+    primaryHover: string;
+    borderColor: string;
+    hoverBg: string;
+  };
+}
+
+export default function Hero({
+  title,
+  rotatingTexts,
+  subtitle,
+  primaryColor,
+  ctaPrimary,
+  ctaSecondary,
+  theme,
+}: HeroProps) {
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 1000], [0, 600]); // Parallax dengan Framer Motion
   const rotateX = useTransform(scrollY, [0, 1000], [0, -5]); // Rotasi X untuk efek miring ke depan
@@ -19,8 +49,8 @@ export default function Hero() {
       duration={400}
     >
       <section className="relative w-full h-[120vh] flex items-center justify-center overflow-hidden">
-        {/* Background Gradient - Elemen terpisah dengan z-index sendiri */}
-        <div className="absolute inset-0 bg-gradient-to-t from-emerald-500/50 to-white z-[10]" />
+        {/* Background Gradient - Dynamic based on theme */}
+        <div className={`absolute inset-0 ${theme.gradient} z-[10]`} />
 
         <Paralax />
 
@@ -32,20 +62,16 @@ export default function Hero() {
             transformPerspective: 1000,
           }}
         >
-          <h1 className="text-4xl md:text-4xl lg:text-6xl font-bold text-gray-700 mb-2">
-            Sampah Aja Diedukasi,
+          <h1 className="text-4xl md:text-4xl  lg:text-6xl font-bold text-gray-700 mb-2 ">
+            {title}
           </h1>
-          <span className="text-emerald-500 gap-4 items-center justify-center flex text-4xl md:text-4xl lg:text-6xl font-bold">
+          <span
+            className={`${primaryColor} gap-4 items-center justify-center flex text-4xl md:text-4xl lg:text-6xl font-bold`}
+          >
             Kamu
             <RotatingText
-              texts={[
-                "Gimana?",
-                "Masih Cuek",
-                "Kapan Belajar?",
-                "Nggak Malu?",
-                "Kapan Sadar?",
-              ]}
-              mainClassName="px-2 w-fit sm:px-2 md:px-3 bg-emerald-500 text-white font-bold overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-lg"
+              texts={rotatingTexts}
+              mainClassName={`px-2 w-fit text-shadow-lg sm:px-2 md:px-3 ${theme.primaryColor} inset-shadow-sm inset-shadow-black/15 text-white font-bold overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-lg`}
               staggerFrom={"last"}
               initial={{ y: "100%" }}
               animate={{ y: 0 }}
@@ -57,15 +83,20 @@ export default function Hero() {
             />
           </span>
           <p className="text-lg mt-4 md:text-xl text-gray-600 mb-8 max-w-xl mx-auto">
-            Belajar memilah, mengolah, dan mengurangi sampah dengan cara yang
-            mudah dan menyenangkan.
+            {subtitle}
           </p>
-          <div className="flex gap-4 justify-center">
-            <button className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg">
-              Get Started
+          <div className="flex gap-4 justify-center ">
+            <button
+              onClick={ctaPrimary.action}
+              className={`${theme.primaryColor} text-shadow-sm inset-shadow-sm inset-shadow-black/15 ${theme.primaryHover} text-white font-semibold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105 `}
+            >
+              {ctaPrimary.text}
             </button>
-            <button className="border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-50 font-semibold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105">
-              Learn More
+            <button
+              onClick={ctaSecondary.action}
+              className={`border-2 ${theme.borderColor} ${primaryColor} ${theme.hoverBg} font-semibold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105`}
+            >
+              {ctaSecondary.text}
             </button>
           </div>
         </motion.header>

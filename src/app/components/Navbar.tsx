@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import {
   Menu,
   X,
@@ -20,6 +21,44 @@ export default function Navbar() {
   const [activeDropdown, setActiveDropdown] = useState<number | string | null>(
     null
   );
+  const pathname = usePathname();
+
+  // Theme colors based on route
+  const getThemeColors = () => {
+    if (pathname === "/belajar") {
+      return {
+        primary: "yellow",
+        primaryHex: "#eab308", // yellow-500
+        primaryLight: "#fef3c7", // yellow-100
+        primaryDark: "#ca8a04", // yellow-600
+        gradient: "from-yellow-500 to-amber-600",
+        gradientHover: "from-yellow-600 to-amber-700",
+        text: "from-yellow-600 to-amber-600",
+        bg: "bg-yellow-100",
+        bgHover: "hover:bg-yellow-50/80",
+        textHover: "hover:text-yellow-600",
+        borderColor: "border-yellow-100",
+        gradientOverlay: "from-yellow-400 to-amber-500",
+      };
+    }
+    // Default emerald theme for home and other routes
+    return {
+      primary: "emerald",
+      primaryHex: "#10b981", // emerald-500
+      primaryLight: "#d1fae5", // emerald-100
+      primaryDark: "#059669", // emerald-600
+      gradient: "from-green-500 to-emerald-600",
+      gradientHover: "from-green-600 to-emerald-700",
+      text: "from-green-600 to-emerald-600",
+      bg: "bg-green-100",
+      bgHover: "hover:bg-green-50/80",
+      textHover: "hover:text-green-600",
+      borderColor: "border-green-100",
+      gradientOverlay: "from-green-400 to-emerald-500",
+    };
+  };
+
+  const theme = getThemeColors();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,13 +72,14 @@ export default function Navbar() {
     {
       icon: Home,
       label: "Beranda",
-      href: "#home",
+      href: "/",
     },
     {
       icon: BookOpen,
       label: "Belajar",
       hasDropdown: true,
       dropdownItems: [
+        { icon: BookOpen, label: "Belajar", href: "/belajar" },
         { icon: Recycle, label: "Jenis Sampah", href: "#jenis-sampah" },
         { icon: TreePine, label: "Cara Daur Ulang", href: "#daur-ulang" },
         { icon: Award, label: "Tips & Trik", href: "#tips-trik" },
@@ -97,10 +137,14 @@ export default function Navbar() {
             <div className="hidden md:flex items-center space-x-2">
               {/* Logo/Brand */}
               <div className="flex items-center space-x-2 pr-4">
-                <div className="bg-gradient-to-br from-emerald-500 to-emerald-600 p-2 rounded-full">
+                <div
+                  className={`bg-gradient-to-br ${theme.gradient} p-2 rounded-full`}
+                >
                   <Leaf className="w-5 h-5 text-white" />
                 </div>
-                <span className="font-bold text-lg bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+                <span
+                  className={`font-bold text-lg bg-gradient-to-r ${theme.text} bg-clip-text text-transparent`}
+                >
                   Sampedia
                 </span>
               </div>
@@ -118,7 +162,7 @@ export default function Navbar() {
                           e.stopPropagation();
                           handleDropdownToggle(index);
                         }}
-                        className="group flex items-center space-x-2 px-5 py-2.5 rounded-full text-gray-900 hover:text-green-600 hover:bg-green-50/80 transition-all duration-300 relative overflow-hidden"
+                        className={`group flex items-center space-x-2 px-5 py-2.5 rounded-full text-gray-900 ${theme.textHover} ${theme.bgHover} transition-all duration-300 relative overflow-hidden`}
                       >
                         <IconComponent className="w-4 h-4" />
                         <span className="text-sm font-medium whitespace-nowrap">
@@ -129,25 +173,31 @@ export default function Navbar() {
                             activeDropdown === index ? "rotate-180" : ""
                           }`}
                         />
-                        <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-500 opacity-0 group-hover:opacity-8 transition-opacity duration-300 rounded-full"></div>
+                        <div
+                          className={`absolute inset-0 bg-gradient-to-r ${theme.gradientOverlay} opacity-0 group-hover:opacity-8 transition-opacity duration-300 rounded-full`}
+                        ></div>
                       </button>
                     ) : (
                       <a
                         href={item.href}
-                        className="group flex items-center space-x-2 px-5 py-2.5 rounded-full text-gray-900 hover:text-green-600 hover:bg-green-50/80 transition-all duration-300 relative overflow-hidden"
+                        className={`group flex items-center space-x-2 px-5 py-2.5 rounded-full text-gray-900 ${theme.textHover} ${theme.bgHover} transition-all duration-300 relative overflow-hidden`}
                       >
                         <IconComponent className="w-4 h-4" />
                         <span className="text-sm font-medium whitespace-nowrap">
                           {item.label}
                         </span>
-                        <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-500 opacity-0 group-hover:opacity-8 transition-opacity duration-300 rounded-full"></div>
+                        <div
+                          className={`absolute inset-0 bg-gradient-to-r ${theme.gradientOverlay} opacity-0 group-hover:opacity-8 transition-opacity duration-300 rounded-full`}
+                        ></div>
                       </a>
                     )}
 
                     {/* Dropdown Menu */}
                     {item.hasDropdown && (
                       <div
-                        className={`absolute top-full mt-6 left-0 bg-white/80 rounded-2xl backdrop-blur-xl border border-green-100 py-2 min-w-48 transition-all duration-300 transform origin-top shadow-lg ${
+                        className={`absolute top-full mt-6 left-0 bg-white/80 rounded-2xl backdrop-blur-xl border ${
+                          theme.borderColor
+                        } py-2 min-w-48 transition-all duration-300 transform origin-top shadow-lg ${
                           activeDropdown === index
                             ? "opacity-100 scale-100 translate-y-0 pointer-events-auto"
                             : "opacity-0 scale-95 -translate-y-2 pointer-events-none"
@@ -161,7 +211,7 @@ export default function Navbar() {
                                 key={dropdownItem.label}
                                 href={dropdownItem.href}
                                 onClick={() => setActiveDropdown(null)}
-                                className="group flex items-center space-x-3 px-4 py-3 text-gray-900 hover:text-green-600 hover:bg-green-50/80 transition-all duration-200 relative overflow-hidden"
+                                className={`group flex items-center space-x-3 px-4 py-3 text-gray-900 ${theme.textHover} ${theme.bgHover} transition-all duration-200 relative overflow-hidden`}
                                 style={{
                                   animationDelay: `${dropdownIndex * 50}ms`,
                                   animation:
@@ -174,7 +224,9 @@ export default function Navbar() {
                                 <span className="text-sm font-medium whitespace-nowrap">
                                   {dropdownItem.label}
                                 </span>
-                                <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-500 opacity-0 group-hover:opacity-5 transition-opacity duration-200"></div>
+                                <div
+                                  className={`absolute inset-0 bg-gradient-to-r ${theme.gradientOverlay} opacity-0 group-hover:opacity-5 transition-opacity duration-200`}
+                                ></div>
                               </a>
                             );
                           }
@@ -189,8 +241,10 @@ export default function Navbar() {
               <div className="w-px h-6 bg-gray-200 mx-2"></div>
 
               {/* CTA Button integrated */}
-              <button className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 py-2.5 rounded-full font-medium text-sm hover:shadow-lg hover:scale-105 transition-all duration-300 hover:from-green-600 hover:to-emerald-700 whitespace-nowrap">
-                Mulai Belajar
+              <button
+                className={`bg-gradient-to-r ${theme.gradient} text-white px-6 py-2.5 rounded-full font-medium text-sm hover:shadow-lg hover:scale-105 transition-all duration-300 hover:${theme.gradientHover} whitespace-nowrap`}
+              >
+                Coba Quiz
               </button>
             </div>
 
@@ -198,10 +252,14 @@ export default function Navbar() {
             <div className="md:hidden flex items-center justify-between w-full">
               {/* Logo */}
               <div className="flex items-center space-x-2">
-                <div className="bg-gradient-to-br from-green-500 to-emerald-600 p-2 rounded-full">
+                <div
+                  className={`bg-gradient-to-br ${theme.gradient} p-2 rounded-full`}
+                >
                   <Leaf className="w-5 h-5 text-white" />
                 </div>
-                <span className="font-bold text-lg bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+                <span
+                  className={`font-bold text-lg bg-gradient-to-r ${theme.text} bg-clip-text text-transparent`}
+                >
                   Sampah.pedia
                 </span>
               </div>
@@ -209,7 +267,7 @@ export default function Navbar() {
               {/* Mobile Menu Button */}
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="p-2 rounded-full hover:bg-green-50 transition-colors duration-200"
+                className={`p-2 rounded-full ${theme.bgHover} transition-colors duration-200`}
               >
                 {isOpen ? (
                   <X className="w-5 h-5" />
@@ -238,7 +296,9 @@ export default function Navbar() {
 
         {/* Mobile Menu Panel */}
         <div
-          className={`absolute top-20 left-4 right-4 bg-white/95 backdrop-blur-lg rounded-3xl shadow-2xl border border-green-100 p-6 transform transition-all duration-300 max-h-[80vh] overflow-y-auto ${
+          className={`absolute top-20 left-4 right-4 bg-white/95 backdrop-blur-lg rounded-3xl shadow-2xl border ${
+            theme.borderColor
+          } p-6 transform transition-all duration-300 max-h-[80vh] overflow-y-auto ${
             isOpen ? "translate-y-0 scale-100" : "-translate-y-4 scale-95"
           }`}
         >
@@ -251,7 +311,7 @@ export default function Navbar() {
                     <div>
                       <button
                         onClick={() => handleDropdownToggle(`mobile-${index}`)}
-                        className="group flex items-center justify-between w-full px-4 py-3 rounded-2xl text-gray-700 hover:text-green-600 hover:bg-green-50 transition-all duration-300"
+                        className={`group flex items-center justify-between w-full px-4 py-3 rounded-2xl text-gray-700 ${theme.textHover} ${theme.bgHover} transition-all duration-300`}
                         style={{
                           animationDelay: `${index * 50}ms`,
                           animation: isOpen
@@ -260,8 +320,12 @@ export default function Navbar() {
                         }}
                       >
                         <div className="flex items-center space-x-3">
-                          <div className="bg-green-100 p-2 rounded-full group-hover:bg-green-200 transition-colors duration-200">
-                            <IconComponent className="w-5 h-5 text-green-600" />
+                          <div
+                            className={`${theme.bg} p-2 rounded-full group-hover:bg-${theme.primary}-200 transition-colors duration-200`}
+                          >
+                            <IconComponent
+                              className={`w-5 h-5 text-${theme.primary}-600`}
+                            />
                           </div>
                           <span className="font-medium">{item.label}</span>
                         </div>
@@ -290,9 +354,11 @@ export default function Navbar() {
                                 key={dropdownItem.label}
                                 href={dropdownItem.href}
                                 onClick={() => setIsOpen(false)}
-                                className="group flex items-center space-x-3 px-4 py-2 rounded-xl text-gray-900 hover:text-green-600 hover:bg-green-50/80 transition-all duration-200"
+                                className={`group flex items-center space-x-3 px-4 py-2 rounded-xl text-gray-900 ${theme.textHover} ${theme.bgHover} transition-all duration-200`}
                               >
-                                <DropdownIconComponent className="w-4 h-4 text-green-500" />
+                                <DropdownIconComponent
+                                  className={`w-4 h-4 text-${theme.primary}-500`}
+                                />
                                 <span className="text-sm font-medium">
                                   {dropdownItem.label}
                                 </span>
@@ -306,7 +372,7 @@ export default function Navbar() {
                     <a
                       href={item.href}
                       onClick={() => setIsOpen(false)}
-                      className="group flex items-center space-x-3 px-4 py-3 rounded-2xl text-gray-700 hover:text-green-600 hover:bg-green-50 transition-all duration-300 relative overflow-hidden"
+                      className={`group flex items-center space-x-3 px-4 py-3 rounded-2xl text-gray-700 ${theme.textHover} ${theme.bgHover} transition-all duration-300 relative overflow-hidden`}
                       style={{
                         animationDelay: `${index * 50}ms`,
                         animation: isOpen
@@ -314,8 +380,12 @@ export default function Navbar() {
                           : "none",
                       }}
                     >
-                      <div className="bg-green-100 p-2 rounded-full group-hover:bg-green-200 transition-colors duration-200">
-                        <IconComponent className="w-5 h-5 text-green-600" />
+                      <div
+                        className={`${theme.bg} p-2 rounded-full group-hover:bg-${theme.primary}-200 transition-colors duration-200`}
+                      >
+                        <IconComponent
+                          className={`w-5 h-5 text-${theme.primary}-600`}
+                        />
                       </div>
                       <span className="font-medium">{item.label}</span>
                     </a>
@@ -325,8 +395,10 @@ export default function Navbar() {
             })}
           </div>
 
-          <div className="mt-6 pt-6 border-t border-green-100">
-            <button className="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white py-3 rounded-2xl font-medium hover:shadow-lg hover:scale-105 transition-all duration-300">
+          <div className="mt-6 pt-6 border-t border-gray-100">
+            <button
+              className={`w-full bg-gradient-to-r ${theme.gradient} text-white py-3 rounded-2xl font-medium hover:shadow-lg hover:scale-105 transition-all duration-300`}
+            >
               Mulai Belajar
             </button>
           </div>

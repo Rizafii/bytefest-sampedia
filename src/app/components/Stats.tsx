@@ -145,7 +145,7 @@ export default function Stats() {
   return (
     <section
       id="stats-section"
-      className="relative w-full py-20 px-4 bg-gradient-to-b from-emerald-200/50 to-green-100 overflow-hidden"
+      className="relative w-full py-20 px-4  overflow-hidden"
     >
       <div className="max-w-6xl mx-auto relative z-10">
         {/* Header */}

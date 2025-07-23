@@ -24,7 +24,7 @@ export default function LatarBelakang() {
         )}
         {/* Main heading */}
         <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 bg-emerald-100 px-4 py-2 rounded-full mb-6">
+          <div className="inline-flex items-center gap-2 bg-white/70 backdrop-blur-sm px-4 py-2 rounded-full mb-6 shadow-sm">
             <CircleQuestionMark className="w-5 h-5 text-emerald-600 animate-pulse" />
             <span className="text-emerald-700 font-medium text-sm">
               About Page
