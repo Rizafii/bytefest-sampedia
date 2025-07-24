@@ -125,8 +125,8 @@ export default function Navbar() {
         }`}
       >
         <div
-          className={`backdrop-blur-md rounded-full px-8 py-3 bg-white/80 border border-gray-200 transition-all duration-300 shadow-lg ${
-            scrolled ? "py-2 bg-white/90" : ""
+          className={`backdrop-blur-[1px] rounded-full px-8 py-3 bg-transparent border border-gray-200 transition-all duration-300 shadow-lg ${
+            scrolled ? "py-2 bg-white/90 backdrop-blur-md" : ""
           }`}
         >
           <div className="flex items-center justify-center">
