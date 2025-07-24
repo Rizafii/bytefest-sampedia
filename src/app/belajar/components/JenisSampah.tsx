@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Trash2,
   Leaf,
@@ -103,62 +105,74 @@ export default function JenisSampah() {
           </p>
         </div>
 
-        {/* Main Content */}
-        <div className="grid lg:grid-cols-2 items-center bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
-          {/* Left Side - Enhanced Information Card */}
-          <div className="space-y-8">
+        {/* Main Content - Stack on top, Info below on mobile */}
+        <div className="flex flex-col lg:grid lg:grid-cols-2 lg:items-center bg-white p-4 md:p-8 rounded-2xl shadow-sm border border-gray-200 gap-8">
+          {/* Stack Cards - Top on mobile, Right on desktop */}
+          <div className="order-1 lg:order-2 flex justify-center">
+            <Stack
+              randomRotation={true}
+              sensitivity={180}
+              sendToBackOnClick={false}
+              cardDimensions={{ width: 300, height: 400 }}
+              cardsData={sampahData}
+              onCardChange={(index) => setActiveCard(index)}
+            />
+          </div>
+
+          {/* Information Card - Bottom on mobile, Left on desktop */}
+          <div className="order-2 lg:order-1 space-y-6">
             {currentSampah && (
-              <div className="relative ">
+              <div className="relative">
                 {/* Main Card */}
                 <div
-                  className={`relative bg-gradient-to-br ${currentSampah.gradientBg} border-2 shadow-sm  ${currentSampah.borderColor} rounded-3xl p-8 transition-all duration-700  transform hover:-translate-y-1`}
+                  className={`relative bg-gradient-to-br ${currentSampah.gradientBg} border-2 shadow-sm ${currentSampah.borderColor} rounded-3xl p-6 md:p-8 transition-all duration-700 transform hover:-translate-y-1`}
                 >
                   {/* Header Section */}
-                  <div className="flex items-start justify-between mb-8">
-                    <div className="flex items-center gap-4">
+                  <div className="flex items-start justify-between mb-6">
+                    <div className="flex items-center gap-3 md:gap-4">
                       <div
-                        className={`${currentSampah.accentColor} p-4 rounded-2xl `}
+                        className={`${currentSampah.accentColor} p-3 md:p-4 rounded-2xl`}
                       >
-                        <IconComponent className="w-10 h-10 text-white" />
+                        <IconComponent className="w-6 h-6 md:w-10 md:h-10 text-white" />
                       </div>
                       <div>
-                        <h3 className="text-3xl font-bold text-gray-800 mb-2">
+                        <h3 className="text-xl md:text-3xl font-bold text-gray-800 mb-2">
                           {currentSampah.jenis}
                         </h3>
                         <div
-                          className={`w-16 h-1 ${currentSampah.accentColor} rounded-full`}
+                          className={`w-12 md:w-16 h-1 ${currentSampah.accentColor} rounded-full`}
                         ></div>
                       </div>
                     </div>
                     <div className="text-right">
-                      <span className="text-sm text-gray-500 font-medium">
+                      <span className="text-xs md:text-sm text-gray-500 font-medium">
                         {activeCard + 1} / {sampahData.length}
                       </span>
                     </div>
                   </div>
 
                   {/* Description */}
-                  <div className="mb-8">
-                    <p className="text-gray-700 text-lg leading-relaxed font-medium">
+                  <div className="mb-6">
+                    <p className="text-gray-700 text-sm md:text-lg leading-relaxed font-medium">
                       {currentSampah.deskripsi}
                     </p>
                   </div>
 
                   {/* Examples Section */}
-                  <div className="mb-8">
-                    <div className="flex items-center gap-2 mb-4">
+                  <div className="mb-6">
+                    <div className="flex items-center gap-2 mb-3">
                       <div
                         className={`w-2 h-2 ${currentSampah.accentColor} rounded-full`}
                       ></div>
-                      <h4 className="font-bold text-gray-800 text-xl">
+                      <h4 className="font-bold text-gray-800 text-base md:text-xl">
                         Contoh Sampah
                       </h4>
                     </div>
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3">
                       {currentSampah.contoh.map((item, index) => (
                         <div
                           key={index}
-                          className="bg-white/80 backdrop-blur-sm px-4 py-3 rounded-xl text-sm font-medium text-gray-700 border border-white/50 shadow-sm hover:shadow-md hover:bg-white transition-all duration-300 cursor-default"
+                          className="bg-white/80 backdrop-blur-sm px-3 py-2 md:px-4 md:py-3 rounded-xl text-xs md:text-sm font-medium text-gray-700 border border-white/50 shadow-sm hover:shadow-md hover:bg-white transition-all duration-300 cursor-default"
                         >
                           <div className="flex items-center gap-2">
                             <div
@@ -172,22 +186,22 @@ export default function JenisSampah() {
                   </div>
 
                   {/* Processing Section */}
-                  <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-white/50">
-                    <div className="flex items-center gap-3 mb-4">
+                  <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-4 md:p-6 border border-white/50">
+                    <div className="flex items-center gap-3 mb-3 md:mb-4">
                       <div
                         className={`${currentSampah.accentColor} p-2 rounded-lg`}
                       >
-                        <Lightbulb className="w-5 h-5 text-white" />
+                        <Lightbulb className="w-4 h-4 md:w-5 md:h-5 text-white" />
                       </div>
-                      <h4 className="font-bold text-gray-800 text-xl">
+                      <h4 className="font-bold text-gray-800 text-base md:text-xl">
                         Cara Pengolahan
                       </h4>
                     </div>
                     <div className="flex items-start gap-3">
                       <ArrowRight
-                        className={`w-5 h-5 ${currentSampah.color} mt-1 flex-shrink-0`}
+                        className={`w-4 h-4 md:w-5 md:h-5 ${currentSampah.color} mt-1 flex-shrink-0`}
                       />
-                      <p className="text-gray-700 leading-relaxed text-lg font-medium">
+                      <p className="text-gray-700 leading-relaxed text-sm md:text-lg font-medium">
                         {currentSampah.pengolahan}
                       </p>
                     </div>
@@ -195,18 +209,6 @@ export default function JenisSampah() {
                 </div>
               </div>
             )}
-          </div>
-
-          {/* Right Side - Stack Cards */}
-          <div className="flex justify-center -mt-10 -ml-5">
-            <Stack
-              randomRotation={true}
-              sensitivity={180}
-              sendToBackOnClick={false}
-              cardDimensions={{ width: 400, height: 520 }}
-              cardsData={sampahData}
-              onCardChange={(index) => setActiveCard(index)}
-            />
           </div>
         </div>
       </div>

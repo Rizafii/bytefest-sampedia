@@ -3,12 +3,19 @@ import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import Footer from "../components/Footer";
 import JenisSampah from "./components/JenisSampah";
-import AyoBernalar from "./components/AyoBernalar";
-import CaraDaurUlang from "./components/CaraDaurUlang";
 import SortingSampahGame from "./components/SortingSampahGame";
 import CTA from "./components/CTA";
+import Fakta from "./components/Fakta";
+import Pendahuluan from "./components/Pendahuluan";
+import SolusiKreatif from "./components/SolusiKreatif";
+import WasteManagementGuide from "./components/WasteManagementGuide";
+import Slogan from "./components/Slogan";
+import LearningPath from "./components/LearningPath";
+import WasteCalculator from "./components/WasteCalculator";
+import EcoTimeline from "./components/EcoTimeline";
+import InteractiveMap from "./components/InteractiveMap";
 
-export default function Home() {
+export default function BelajarPage() {
   const belajarHeroProps = {
     title: "Siap Buat Belajar?",
     rotatingTexts: [
@@ -38,14 +45,21 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen w-full overflow-x-hidden bg-gradient-to-tl from-emerald-100/20 via-emerald-100/10 to-white">
+    <div className="min-h-screen w-full overflow-x-hidden bg-gradient-to-tl from-yellow-100/20 via-yellow-100/10 to-white">
       <Navbar />
       <Hero {...belajarHeroProps} />
+      <Pendahuluan />
+      <LearningPath />
+      <Fakta />
+      <EcoTimeline />
+      <Slogan />
       <JenisSampah />
+      <WasteCalculator />
       <SortingSampahGame />
       <CTA />
-      {/* <AyoBernalar /> */}
-      {/* <CaraDaurUlang /> */}
+      <WasteManagementGuide />
+      <SolusiKreatif />
+      <InteractiveMap />
       <Footer />
     </div>
   );

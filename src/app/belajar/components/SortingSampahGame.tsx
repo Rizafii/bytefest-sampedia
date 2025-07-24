@@ -1,4 +1,6 @@
-import { useState, useCallback, useMemo } from "react";
+"use client";
+
+import { useState, useCallback, useMemo, useEffect } from "react";
 import {
   Trash2,
   Target,
@@ -41,6 +43,10 @@ const gameWasteItems: GameWasteItem[] = [
   { id: 4, name: "📱", type: "electronic", category: 4, emoji: "📱" },
   { id: 5, name: "🍎", type: "organic", category: 1, emoji: "🍎" },
   { id: 6, name: "🥫", type: "anorganic", category: 2, emoji: "🥫" },
+  { id: 7, name: "🥕", type: "organic", category: 1, emoji: "🥕" },
+  { id: 8, name: "🍼", type: "anorganic", category: 2, emoji: "🍼" },
+  { id: 9, name: "💊", type: "b3", category: 3, emoji: "💊" },
+  { id: 10, name: "💻", type: "electronic", category: 4, emoji: "💻" },
 ];
 
 const wasteBins: WasteBin[] = [
@@ -65,19 +71,29 @@ const wasteBins: WasteBin[] = [
   },
 ];
 
+// Fixed positions to avoid hydration mismatch
+const getInitialPositions = (): WasteItem[] => {
+  return gameWasteItems.map((item, index) => ({
+    ...item,
+    x: 15 + (index % 3) * 25 + ((index * 7) % 15), // Deterministic positioning
+    y: 20 + Math.floor(index / 3) * 30 + ((index * 5) % 20),
+  }));
+};
+
 export default function SortingSampahGame() {
-  const [gameItems, setGameItems] = useState<WasteItem[]>(() =>
-    gameWasteItems.map((item, index) => ({
-      ...item,
-      x: 15 + (index % 3) * 25 + Math.random() * 10,
-      y: 20 + Math.floor(index / 3) * 30 + Math.random() * 10,
-    }))
-  );
+  const [gameItems, setGameItems] = useState<WasteItem[]>([]);
   const [score, setScore] = useState<number>(0);
   const [attempts, setAttempts] = useState<number>(0);
   const [feedback, setFeedback] = useState<string | null>(null);
   const [gameComplete, setGameComplete] = useState<boolean>(false);
   const [selectedItem, setSelectedItem] = useState<WasteItem | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  // Initialize positions after component mounts to avoid hydration issues
+  useEffect(() => {
+    setGameItems(getInitialPositions());
+    setMounted(true);
+  }, []);
 
   const handleItemClick = useCallback(
     (item: WasteItem) => {
@@ -120,13 +136,7 @@ export default function SortingSampahGame() {
   );
 
   const resetGame = useCallback(() => {
-    setGameItems(
-      gameWasteItems.map((item, index) => ({
-        ...item,
-        x: 15 + (index % 3) * 25 + Math.random() * 10,
-        y: 20 + Math.floor(index / 3) * 30 + Math.random() * 10,
-      }))
-    );
+    setGameItems(getInitialPositions());
     setScore(0);
     setAttempts(0);
     setFeedback(null);
@@ -139,8 +149,25 @@ export default function SortingSampahGame() {
     [score, attempts]
   );
 
+  // Don't render game area until mounted to avoid hydration issues
+  if (!mounted) {
+    return (
+      <section className="w-full py-12 px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center">
+            <div className="animate-pulse">
+              <div className="h-8 bg-gray-200 rounded-full mb-4 mx-auto w-48"></div>
+              <div className="h-12 bg-gray-200 rounded mb-4 mx-auto w-96"></div>
+              <div className="h-4 bg-gray-200 rounded mb-8 mx-auto w-80"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
-    <section className="w-full py-12 px-4 ">
+    <section className="w-full py-12 px-4">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 bg-yellow-100 px-4 py-2 rounded-full mb-4">
@@ -158,37 +185,6 @@ export default function SortingSampahGame() {
             Klik sampah lalu klik tong yang tepat! Uji pemahamanmu tentang
             jenis-jenis sampah
           </p>
-
-          {/* Score Board */}
-          <div className="flex justify-center gap-4 mb-6">
-            <div className="bg-white rounded-xl px-4 py-3 shadow-sm">
-              <div className="flex items-center gap-2">
-                <Star className="w-4 h-4 text-yellow-500" />
-                <span className="text-gray-600 text-sm">Skor:</span>
-                <span className="text-xl font-bold text-yellow-600">
-                  {score}
-                </span>
-              </div>
-            </div>
-            <div className="bg-white rounded-xl px-4 py-3 shadow-sm">
-              <div className="flex items-center gap-2">
-                <Trophy className="w-4 h-4 text-blue-500" />
-                <span className="text-gray-600 text-sm">Akurasi:</span>
-                <span className="text-xl font-bold text-blue-600">
-                  {accuracy}%
-                </span>
-              </div>
-            </div>
-            <div className="bg-white rounded-xl px-4 py-3 shadow-sm">
-              <div className="flex items-center gap-2">
-                <Trash2 className="w-4 h-4 text-green-500" />
-                <span className="text-gray-600 text-sm">Sisa:</span>
-                <span className="text-xl font-bold text-green-600">
-                  {gameItems.length}
-                </span>
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* Game Complete Message */}
@@ -226,52 +222,72 @@ export default function SortingSampahGame() {
 
         {/* Game Area */}
         <div className="relative">
-          {/* Instructions */}
-          {gameItems.length > 0 && (
-            <div className="text-center mb-4 p-3 bg-blue-50 rounded-lg">
-              <p className="text-sm text-blue-700">
-                👆 Klik sampah, lalu klik tong yang tepat untuk membuangnya
-              </p>
-            </div>
-          )}
-
           {/* Conditionally render game area only if there are items */}
           {gameItems.length > 0 && (
             <>
-              {/* Floating Area - simplified */}
-              <div className="relative bg-sky-50 rounded-2xl p-6 mb-6 min-h-[300px] border-2 border-sky-200">
+              {/* Floating Area */}
+              <div className="relative bg-yellow-50 rounded-2xl p-4 md:p-6 mb-6 min-h-[250px] md:min-h-[300px] border-2 border-yellow-200">
                 <div className="absolute top-3 left-4 bg-white px-3 py-1 rounded-full">
-                  <span className="text-sky-700 font-medium text-sm">
+                  <span className="text-yellow-700 font-medium text-sm">
                     Area Sampah ☁️
                   </span>
                 </div>
 
-                {/* Floating Waste Items - click only */}
+                {/* Score Board - moved inside area sampah */}
+                <div className="absolute top-3 right-4 flex flex-col md:flex-row gap-2">
+                  <div className="bg-white rounded-lg px-2 md:px-3 py-1 md:py-2 shadow-sm">
+                    <div className="flex items-center gap-1">
+                      <Star className="w-3 h-3 text-yellow-500" />
+                      <span className="text-gray-600 text-xs">Skor:</span>
+                      <span className="text-sm font-bold text-yellow-600">
+                        {score}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="bg-white rounded-lg px-2 md:px-3 py-1 md:py-2 shadow-sm">
+                    <div className="flex items-center gap-1">
+                      <Trophy className="w-3 h-3 text-blue-500" />
+                      <span className="text-gray-600 text-xs">Akurasi:</span>
+                      <span className="text-sm font-bold text-blue-600">
+                        {accuracy}%
+                      </span>
+                    </div>
+                  </div>
+                  <div className="bg-white rounded-lg px-2 md:px-3 py-1 md:py-2 shadow-sm">
+                    <div className="flex items-center gap-1">
+                      <Trash2 className="w-3 h-3 text-green-500" />
+                      <span className="text-gray-600 text-xs">Sisa:</span>
+                      <span className="text-sm font-bold text-green-600">
+                        {gameItems.length}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Floating Waste Items */}
                 {gameItems.map((item) => (
                   <div
                     key={item.id}
                     onClick={() => handleItemClick(item)}
                     className={`absolute cursor-pointer hover:scale-105 transition-all duration-200 select-none ${
-                      selectedItem?.id === item.id
-                        ? "scale-110 ring-4 ring-yellow-400 ring-opacity-75"
-                        : ""
+                      selectedItem?.id === item.id ? "scale-110" : ""
                     }`}
                     style={{
-                      left: `${item.x}%`,
-                      top: `${item.y}%`,
+                      left: `${Math.max(0, Math.min(85, item.x))}%`,
+                      top: `${Math.max(15, Math.min(75, item.y))}%`,
                     }}
                   >
                     <div
-                      className={`w-14 h-14 bg-white rounded-full shadow-md border flex items-center justify-center hover:shadow-lg transition-shadow duration-200 ${
+                      className={`w-12 h-12 md:w-14 md:h-14 bg-white rounded-full shadow-md border flex items-center justify-center hover:shadow-lg transition-shadow duration-200 ${
                         selectedItem?.id === item.id
                           ? "bg-yellow-50 border-yellow-400"
                           : ""
                       }`}
                     >
-                      <span className="text-2xl">{item.emoji}</span>
+                      <span className="text-xl md:text-2xl">{item.emoji}</span>
                     </div>
                     {selectedItem?.id === item.id && (
-                      <div className="absolute -top-2 -right-2 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center">
+                      <div className="absolute -top-2 -right-2 w-5 h-5 md:w-6 md:h-6 bg-yellow-400 rounded-full flex items-center justify-center">
                         <span className="text-white text-xs font-bold">✓</span>
                       </div>
                     )}
@@ -279,8 +295,8 @@ export default function SortingSampahGame() {
                 ))}
               </div>
 
-              {/* Waste Bins Row - click only */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+              {/* Waste Bins Row - 2x2 grid on mobile, 4 columns on desktop */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6">
                 {wasteBins.map((bin) => (
                   <div
                     key={bin.id}
@@ -290,7 +306,7 @@ export default function SortingSampahGame() {
                     }`}
                   >
                     <div
-                      className={`p-4 rounded-xl border-2 transition-colors duration-200 ${
+                      className={`p-3 md:p-4 rounded-xl border-2 transition-colors duration-200 ${
                         selectedItem
                           ? "border-gray-400 bg-gray-50 hover:border-yellow-400 hover:bg-yellow-50"
                           : "border-gray-300 bg-white hover:bg-gray-50"
@@ -298,11 +314,13 @@ export default function SortingSampahGame() {
                     >
                       <div className="text-center">
                         <div
-                          className={`w-16 h-20 ${bin.color} rounded-lg mx-auto mb-3 flex items-center justify-center`}
+                          className={`w-12 h-16 md:w-16 md:h-20 ${bin.color} rounded-lg mx-auto mb-2 md:mb-3 flex items-center justify-center`}
                         >
-                          <Trash2 className="w-6 h-6 text-white" />
+                          <Trash2 className="w-5 h-5 md:w-6 md:h-6 text-white" />
                         </div>
-                        <h4 className={`font-bold ${bin.textColor}`}>
+                        <h4
+                          className={`font-bold ${bin.textColor} text-sm md:text-base`}
+                        >
                           {bin.name}
                         </h4>
                         {selectedItem && (
@@ -324,7 +342,7 @@ export default function SortingSampahGame() {
           <div className="text-center mt-6">
             <button
               onClick={resetGame}
-              className="inline-flex items-center gap-2 bg-yellow-500 text-white px-6 py-3 rounded-full hover:bg-gray-700 transition-colors duration-200"
+              className="inline-flex items-center gap-2 bg-yellow-500 text-white px-6 py-3 rounded-full hover:bg-yellow-600 transition-colors duration-200"
             >
               <RotateCcw className="w-4 h-4" />
               Reset Game

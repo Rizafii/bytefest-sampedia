@@ -3,7 +3,7 @@ import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import LatarBelakang from "./components/LatarBelakang";
 import Support from "./components/SupportBy";
-import Stats from "./components/Stats";
+import EnhancedStats from "./components/EnhancedStats";
 import Testimonials from "./components/Testimonials";
 import CTA from "./components/CTA";
 import Footer from "./components/Footer";
@@ -46,7 +46,7 @@ export default function Home() {
       <LatarBelakang />
       <Support />
       <CTA />
-      <Stats />
+      <EnhancedStats />
       <Testimonials />
       <CTABelajar />
       <Footer />

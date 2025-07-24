@@ -48,14 +48,14 @@ export default function Hero({
       sparkCount={12}
       duration={400}
     >
-      <section className="relative w-full h-[120vh] flex items-center justify-center overflow-hidden">
+      <section className="relative w-full h-[80vh] lg:h-[120vh] flex items-center justify-center overflow-hidden">
         {/* Background Gradient - Dynamic based on theme */}
         <div className={`absolute inset-0 ${theme.gradient} z-[10]`} />
 
         <Paralax />
 
         <motion.header
-          className="-mt-55 text-center px-4 w-full max-w-4xl items-center relative z-[20]"
+          className="lg:-mt-55 -mt-25 text-center px-4 w-full max-w-4xl items-center relative z-[20]"
           style={{
             y,
             rotateX,

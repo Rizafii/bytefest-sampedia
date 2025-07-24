@@ -9,18 +9,12 @@ import {
   Users,
   Phone,
   Home,
-  ChevronDown,
-  Recycle,
-  TreePine,
-  Award,
+  Brain,
 } from "lucide-react";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<number | string | null>(
-    null
-  );
   const pathname = usePathname();
 
   // Theme colors based on route
@@ -28,25 +22,55 @@ export default function Navbar() {
     if (pathname === "/belajar") {
       return {
         primary: "yellow",
-        primaryHex: "#eab308", // yellow-500
-        primaryLight: "#fef3c7", // yellow-100
-        primaryDark: "#ca8a04", // yellow-600
-        gradient: "from-yellow-500 to-amber-600",
-        gradientHover: "from-yellow-600 to-amber-700",
-        text: "from-yellow-600 to-amber-600",
+        gradient: "from-yellow-500 to-yellow-600",
+        gradientHover: "from-yellow-600 to-yellow-700",
+        text: "from-yellow-600 to-yellow-600",
         bg: "bg-yellow-100",
         bgHover: "hover:bg-yellow-50/80",
         textHover: "hover:text-yellow-600",
         borderColor: "border-yellow-100",
-        gradientOverlay: "from-yellow-400 to-amber-500",
+        gradientOverlay: "from-yellow-400 to-yellow-500",
+      };
+    } else if (pathname === "/komunitas") {
+      return {
+        primary: "blue",
+        gradient: "from-blue-500 to-blue-600",
+        gradientHover: "from-blue-600 to-blue-700",
+        text: "from-blue-600 to-blue-600",
+        bg: "bg-blue-100",
+        bgHover: "hover:bg-blue-50/80",
+        textHover: "hover:text-blue-600",
+        borderColor: "border-blue-100",
+        gradientOverlay: "from-blue-400 to-blue-500",
+      };
+    } else if (pathname === "/quiz") {
+      return {
+        primary: "purple",
+        gradient: "from-purple-500 to-purple-600",
+        gradientHover: "from-purple-600 to-purple-700",
+        text: "from-purple-600 to-purple-600",
+        bg: "bg-purple-100",
+        bgHover: "hover:bg-purple-50/80",
+        textHover: "hover:text-purple-600",
+        borderColor: "border-purple-100",
+        gradientOverlay: "from-purple-400 to-purple-500",
+      };
+    } else if (pathname === "/contact") {
+      return {
+        primary: "red",
+        gradient: "from-red-500 to-red-600",
+        gradientHover: "from-red-600 to-red-700",
+        text: "from-red-600 to-red-600",
+        bg: "bg-red-100",
+        bgHover: "hover:bg-red-50/80",
+        textHover: "hover:text-red-600",
+        borderColor: "border-red-100",
+        gradientOverlay: "from-red-400 to-red-500",
       };
     }
     // Default emerald theme for home and other routes
     return {
       primary: "emerald",
-      primaryHex: "#10b981", // emerald-500
-      primaryLight: "#d1fae5", // emerald-100
-      primaryDark: "#059669", // emerald-600
       gradient: "from-green-500 to-emerald-600",
       gradientHover: "from-green-600 to-emerald-700",
       text: "from-green-600 to-emerald-600",
@@ -68,6 +92,7 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Simplified nav items without dropdown
   const navItems = [
     {
       icon: Home,
@@ -77,59 +102,31 @@ export default function Navbar() {
     {
       icon: BookOpen,
       label: "Belajar",
-      hasDropdown: true,
-      dropdownItems: [
-        { icon: BookOpen, label: "Belajar", href: "/belajar" },
-        { icon: Recycle, label: "Jenis Sampah", href: "#jenis-sampah" },
-        { icon: TreePine, label: "Cara Daur Ulang", href: "#daur-ulang" },
-        { icon: Award, label: "Tips & Trik", href: "#tips-trik" },
-      ],
+      href: "/belajar",
     },
     {
       icon: Users,
       label: "Komunitas",
-      hasDropdown: true,
-      dropdownItems: [
-        { icon: Users, label: "Forum Diskusi", href: "#forum" },
-        { icon: Award, label: "Leaderboard", href: "#leaderboard" },
-        { icon: Leaf, label: "Event Hijau", href: "#events" },
-      ],
+      href: "/komunitas",
     },
     {
       icon: Phone,
       label: "Kontak",
-      href: "#kontak",
+      href: "/contact",
     },
   ];
-
-  const handleDropdownToggle = (index: number | string) => {
-    setActiveDropdown(activeDropdown === index ? null : index);
-  };
-
-  const handleClickOutside = () => {
-    setActiveDropdown(null);
-  };
-
-  useEffect(() => {
-    if (activeDropdown !== null) {
-      document.addEventListener("click", handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, [activeDropdown]);
 
   return (
     <>
       {/* Desktop Navbar - Capsule Shape */}
       <nav
-        className={`fixed top-6 left-1/2 transform -translate-x-1/2 z-[999] transition-all duration-500 ease-in-out  ${
+        className={`fixed top-6 left-1/2 transform -translate-x-1/2 z-[90] transition-all duration-500 ease-in-out  ${
           scrolled ? "scale-95 top-4" : "scale-100"
         }`}
       >
         <div
-          className={`backdrop-blur-xs rounded-full px-8 py-3  border border-gray-200 transition-all duration-300  ${
-            scrolled ? "py-2 bg-white/50" : ""
+          className={`backdrop-blur-md rounded-full px-8 py-3 bg-white/80 border border-gray-200 transition-all duration-300 shadow-lg ${
+            scrolled ? "py-2 bg-white/90" : ""
           }`}
         >
           <div className="flex items-center justify-center">
@@ -138,7 +135,7 @@ export default function Navbar() {
               {/* Logo/Brand */}
               <div className="flex items-center space-x-2 pr-4">
                 <div
-                  className={`bg-gradient-to-br ${theme.gradient} p-2 rounded-full`}
+                  className={`bg-gradient-to-br ${theme.gradient} p-2 rounded-full shadow-sm`}
                 >
                   <Leaf className="w-5 h-5 text-white" />
                 </div>
@@ -152,104 +149,47 @@ export default function Navbar() {
               {/* Separator */}
               <div className="w-px h-6 bg-gray-200 mx-2"></div>
 
-              {navItems.map((item, index) => {
+              {navItems.map((item) => {
                 const IconComponent = item.icon;
+                const isActive = pathname === item.href;
                 return (
-                  <div key={item.label} className="relative">
-                    {item.hasDropdown ? (
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDropdownToggle(index);
-                        }}
-                        className={`group flex items-center space-x-2 px-5 py-2.5 rounded-full text-gray-900 ${theme.textHover} ${theme.bgHover} transition-all duration-300 relative overflow-hidden`}
-                      >
-                        <IconComponent className="w-4 h-4" />
-                        <span className="text-sm font-medium whitespace-nowrap">
-                          {item.label}
-                        </span>
-                        <ChevronDown
-                          className={`w-3 h-3 transition-transform duration-200 ${
-                            activeDropdown === index ? "rotate-180" : ""
-                          }`}
-                        />
-                        <div
-                          className={`absolute inset-0 bg-gradient-to-r ${theme.gradientOverlay} opacity-0 group-hover:opacity-8 transition-opacity duration-300 rounded-full`}
-                        ></div>
-                      </button>
-                    ) : (
-                      <a
-                        href={item.href}
-                        className={`group flex items-center space-x-2 px-5 py-2.5 rounded-full text-gray-900 ${theme.textHover} ${theme.bgHover} transition-all duration-300 relative overflow-hidden`}
-                      >
-                        <IconComponent className="w-4 h-4" />
-                        <span className="text-sm font-medium whitespace-nowrap">
-                          {item.label}
-                        </span>
-                        <div
-                          className={`absolute inset-0 bg-gradient-to-r ${theme.gradientOverlay} opacity-0 group-hover:opacity-8 transition-opacity duration-300 rounded-full`}
-                        ></div>
-                      </a>
-                    )}
-
-                    {/* Dropdown Menu */}
-                    {item.hasDropdown && (
-                      <div
-                        className={`absolute top-full mt-6 left-0 bg-white/80 rounded-2xl backdrop-blur-xl border ${
-                          theme.borderColor
-                        } py-2 min-w-48 transition-all duration-300 transform origin-top shadow-lg ${
-                          activeDropdown === index
-                            ? "opacity-100 scale-100 translate-y-0 pointer-events-auto"
-                            : "opacity-0 scale-95 -translate-y-2 pointer-events-none"
-                        }`}
-                      >
-                        {item.dropdownItems.map(
-                          (dropdownItem, dropdownIndex) => {
-                            const DropdownIconComponent = dropdownItem.icon;
-                            return (
-                              <a
-                                key={dropdownItem.label}
-                                href={dropdownItem.href}
-                                onClick={() => setActiveDropdown(null)}
-                                className={`group flex items-center space-x-3 px-4 py-3 text-gray-900 ${theme.textHover} ${theme.bgHover} transition-all duration-200 relative overflow-hidden`}
-                                style={{
-                                  animationDelay: `${dropdownIndex * 50}ms`,
-                                  animation:
-                                    activeDropdown === index
-                                      ? "slideInDown 200ms ease-out forwards"
-                                      : "none",
-                                }}
-                              >
-                                <DropdownIconComponent className="w-4 h-4" />
-                                <span className="text-sm font-medium whitespace-nowrap">
-                                  {dropdownItem.label}
-                                </span>
-                                <div
-                                  className={`absolute inset-0 bg-gradient-to-r ${theme.gradientOverlay} opacity-0 group-hover:opacity-5 transition-opacity duration-200`}
-                                ></div>
-                              </a>
-                            );
-                          }
-                        )}
-                      </div>
-                    )}
-                  </div>
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    className={`group flex items-center space-x-2 px-5 py-2.5 rounded-full transition-all duration-300 relative overflow-hidden ${
+                      isActive
+                        ? `${theme.bg} ${theme.textHover.replace(
+                            "hover:",
+                            ""
+                          )} shadow-sm`
+                        : `text-gray-700 ${theme.textHover} ${theme.bgHover}`
+                    }`}
+                  >
+                    <IconComponent className="w-4 h-4" />
+                    <span className="text-sm font-medium whitespace-nowrap">
+                      {item.label}
+                    </span>
+                    <div
+                      className={`absolute inset-0 bg-gradient-to-r ${theme.gradientOverlay} opacity-0 group-hover:opacity-8 transition-opacity duration-300 rounded-full`}
+                    ></div>
+                  </a>
                 );
               })}
 
               {/* Separator */}
               <div className="w-px h-6 bg-gray-200 mx-2"></div>
 
-              {/* CTA Button integrated */}
-              <button
-                className={`bg-gradient-to-r ${theme.gradient} text-white px-6 py-2.5 rounded-full font-medium text-sm hover:shadow-lg hover:scale-105 transition-all duration-300 hover:${theme.gradientHover} whitespace-nowrap`}
+              {/* CTA Button */}
+              <a
+                href="/quiz"
+                className={`bg-gradient-to-r ${theme.gradient} text-white px-6 py-2.5 rounded-full font-medium text-sm hover:shadow-lg hover:scale-105 transition-all duration-300 whitespace-nowrap`}
               >
                 Coba Quiz
-              </button>
+              </a>
             </div>
 
             {/* Mobile Content */}
-            <div className="md:hidden flex items-center justify-between w-full">
+            <div className="md:hidden  flex items-center justify-between min-w-82 ">
               {/* Logo */}
               <div className="flex items-center space-x-2">
                 <div
@@ -260,7 +200,7 @@ export default function Navbar() {
                 <span
                   className={`font-bold text-lg bg-gradient-to-r ${theme.text} bg-clip-text text-transparent`}
                 >
-                  Sampah.pedia
+                  Sampedia
                 </span>
               </div>
 
@@ -282,7 +222,7 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       <div
-        className={`fixed inset-0 z-40 md:hidden transition-all duration-300 ${
+        className={`fixed  inset-0 z-40 md:hidden transition-all duration-300 ${
           isOpen
             ? "opacity-100 pointer-events-auto"
             : "opacity-0 pointer-events-none"
@@ -296,111 +236,62 @@ export default function Navbar() {
 
         {/* Mobile Menu Panel */}
         <div
-          className={`absolute top-20 left-4 right-4 bg-white/95 backdrop-blur-lg rounded-3xl shadow-2xl border ${
+          className={`absolute top-25 left-4 right-4 bg-white/95 backdrop-blur-lg rounded-3xl shadow-2xl border ${
             theme.borderColor
           } p-6 transform transition-all duration-300 max-h-[80vh] overflow-y-auto ${
             isOpen ? "translate-y-0 scale-100" : "-translate-y-4 scale-95"
           }`}
         >
-          <div className="space-y-1">
+          <div className="space-y-2">
             {navItems.map((item, index) => {
               const IconComponent = item.icon;
+              const isActive = pathname === item.href;
               return (
-                <div key={item.label}>
-                  {item.hasDropdown ? (
-                    <div>
-                      <button
-                        onClick={() => handleDropdownToggle(`mobile-${index}`)}
-                        className={`group flex items-center justify-between w-full px-4 py-3 rounded-2xl text-gray-700 ${theme.textHover} ${theme.bgHover} transition-all duration-300`}
-                        style={{
-                          animationDelay: `${index * 50}ms`,
-                          animation: isOpen
-                            ? "slideInLeft 300ms ease-out forwards"
-                            : "none",
-                        }}
-                      >
-                        <div className="flex items-center space-x-3">
-                          <div
-                            className={`${theme.bg} p-2 rounded-full group-hover:bg-${theme.primary}-200 transition-colors duration-200`}
-                          >
-                            <IconComponent
-                              className={`w-5 h-5 text-${theme.primary}-600`}
-                            />
-                          </div>
-                          <span className="font-medium">{item.label}</span>
-                        </div>
-                        <ChevronDown
-                          className={`w-4 h-4 transition-transform duration-200 ${
-                            activeDropdown === `mobile-${index}`
-                              ? "rotate-180"
-                              : ""
-                          }`}
-                        />
-                      </button>
-
-                      {/* Mobile Dropdown */}
-                      <div
-                        className={`overflow-hidden transition-all duration-300 ${
-                          activeDropdown === `mobile-${index}`
-                            ? "max-h-48 opacity-100"
-                            : "max-h-0 opacity-0"
-                        }`}
-                      >
-                        <div className="pl-6 space-y-1 mt-2">
-                          {item.dropdownItems.map((dropdownItem) => {
-                            const DropdownIconComponent = dropdownItem.icon;
-                            return (
-                              <a
-                                key={dropdownItem.label}
-                                href={dropdownItem.href}
-                                onClick={() => setIsOpen(false)}
-                                className={`group flex items-center space-x-3 px-4 py-2 rounded-xl text-gray-900 ${theme.textHover} ${theme.bgHover} transition-all duration-200`}
-                              >
-                                <DropdownIconComponent
-                                  className={`w-4 h-4 text-${theme.primary}-500`}
-                                />
-                                <span className="text-sm font-medium">
-                                  {dropdownItem.label}
-                                </span>
-                              </a>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    <a
-                      href={item.href}
-                      onClick={() => setIsOpen(false)}
-                      className={`group flex items-center space-x-3 px-4 py-3 rounded-2xl text-gray-700 ${theme.textHover} ${theme.bgHover} transition-all duration-300 relative overflow-hidden`}
-                      style={{
-                        animationDelay: `${index * 50}ms`,
-                        animation: isOpen
-                          ? "slideInLeft 300ms ease-out forwards"
-                          : "none",
-                      }}
-                    >
-                      <div
-                        className={`${theme.bg} p-2 rounded-full group-hover:bg-${theme.primary}-200 transition-colors duration-200`}
-                      >
-                        <IconComponent
-                          className={`w-5 h-5 text-${theme.primary}-600`}
-                        />
-                      </div>
-                      <span className="font-medium">{item.label}</span>
-                    </a>
-                  )}
-                </div>
+                <a
+                  key={item.label}
+                  href={item.href}
+                  onClick={() => setIsOpen(false)}
+                  className={`group flex items-center space-x-3 px-4 py-3 rounded-2xl transition-all duration-300 ${
+                    isActive
+                      ? `${theme.bg} ${theme.textHover.replace(
+                          "hover:",
+                          ""
+                        )} shadow-sm`
+                      : `text-gray-700 ${theme.textHover} ${theme.bgHover}`
+                  }`}
+                  style={{
+                    animationDelay: `${index * 50}ms`,
+                    animation: isOpen
+                      ? "slideInLeft 300ms ease-out forwards"
+                      : "none",
+                  }}
+                >
+                  <div
+                    className={`${
+                      isActive ? theme.bg : theme.bg
+                    } p-2 rounded-full transition-colors duration-200`}
+                  >
+                    <IconComponent
+                      className={`w-5 h-5 ${
+                        isActive
+                          ? theme.textHover.replace("hover:", "")
+                          : `text-${theme.primary}-600`
+                      }`}
+                    />
+                  </div>
+                  <span className="font-medium">{item.label}</span>
+                </a>
               );
             })}
           </div>
 
           <div className="mt-6 pt-6 border-t border-gray-100">
-            <button
-              className={`w-full bg-gradient-to-r ${theme.gradient} text-white py-3 rounded-2xl font-medium hover:shadow-lg hover:scale-105 transition-all duration-300`}
+            <a
+              href="/quiz"
+              className={`w-full bg-gradient-to-r ${theme.gradient} text-white py-3 rounded-2xl font-medium hover:shadow-lg hover:scale-105 transition-all duration-300 block text-center`}
             >
-              Mulai Belajar
-            </button>
+              Coba Quiz
+            </a>
           </div>
         </div>
       </div>
@@ -414,17 +305,6 @@ export default function Navbar() {
           to {
             opacity: 1;
             transform: translateX(0);
-          }
-        }
-
-        @keyframes slideInDown {
-          from {
-            opacity: 0;
-            transform: translateY(-10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
           }
         }
       `}</style>

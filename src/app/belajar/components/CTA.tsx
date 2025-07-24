@@ -1,5 +1,5 @@
 "use client";
-import { ArrowRight, Download, Brain } from "lucide-react";
+import { ArrowRight, Download, Brain, ArrowDown } from "lucide-react";
 
 export default function CTA() {
   return (
@@ -22,7 +22,7 @@ export default function CTA() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center ">
           <button className="bg-white text-yellow-600 font-semibold py-4 px-8 cursor-pointer rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center gap-2 justify-center">
             <span>Iya juga, gimana dong?</span>
-            <ArrowRight className="w-5 h-5" />
+            <ArrowDown className="w-5 h-5" />
           </button>
         </div>
       </div>
