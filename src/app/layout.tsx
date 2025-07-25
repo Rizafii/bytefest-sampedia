@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next";
 import type React from "react";
 import type { Metadata } from "next";
 import "./globals.css";
@@ -32,6 +33,7 @@ export default function RootLayout({
         <LenisProvider>
           <PageTransition>
             {children}
+            <Analytics />
             <FloatingCharacter />
           </PageTransition>
         </LenisProvider>
